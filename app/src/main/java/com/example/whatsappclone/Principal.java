@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -31,11 +32,27 @@ public class Principal extends AppCompatActivity {
         binding.tabLayout.setupWithViewPager(binding.viewPager);
         setSupportActionBar(binding.toolbar);
 
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                changefloatbuttonIcon(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     private void setUpWithViewPager(ViewPager viewPager){
         Principal.SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CameraFragment(),"");
         adapter.addFragment(new ChatsFragment(),"Chats");
         adapter.addFragment(new StatusFragment(),"Estados");
         adapter.addFragment(new CallsFragment(),"Llamadas");
@@ -86,6 +103,26 @@ public class Principal extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+
+    }
+
+    private void changefloatbuttonIcon(final int index){
+        binding.tabFloatButton.hide();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (index){
+                    case 0: binding.tabFloatButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_chat_24));
+                        binding.tabFloatButton.getDrawable().setTint(1);break;
+
+                    case 1: binding.tabFloatButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_camera));
+                        binding.tabFloatButton.getDrawable().setTint(1);break;
+                    case 2: binding.tabFloatButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_call));
+                        binding.tabFloatButton.getDrawable().setTint(1);break;
+                }
+                binding.tabFloatButton.show();
+            }
+        },400);
 
     }
 }
